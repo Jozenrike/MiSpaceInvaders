@@ -4,15 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ControlDisparo2 : MonoBehaviour {
-
+    
     private string numJugadores = "";
-    //public Transform bala;
+    public Transform bala;
     // Use this for initialization
     void Start () {
-		//Transform bullet = Instantiate(bala) as Transform;
-        //Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
-   
-	}
+        Transform bullet = Instantiate(bala) as Transform;
+    }
 
     void OnCollisionEnter2D(Collision2D coll)
     {
@@ -44,10 +42,15 @@ public class ControlDisparo2 : MonoBehaviour {
         }
         else if (coll.gameObject.tag == "alien")
         {
-            Debug.Log("FA");
+                
         }
-       
+
         // El disparo desaparece (cuidado, si tiene eventos no se ejecutan)
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        
     }
 
     public static void IgnoreCollision(Collider2D collider1, Collider2D collider2, bool ignore = true)

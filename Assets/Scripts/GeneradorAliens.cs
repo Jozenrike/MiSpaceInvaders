@@ -179,7 +179,7 @@ public class GeneradorAliens : MonoBehaviour
         d.gravityScale = 0;
 
         // Posición de partida, en la punta de la nave
-        d.transform.Translate(Vector2.down * 0.7f);
+        d.transform.Translate(new Vector2(Random.Range(-6, 6), Random.Range(3, -1)) * 0.7f);
 
         // Lanzarlo
         d.AddForce(Vector2.down * fuerza, ForceMode2D.Impulse);
