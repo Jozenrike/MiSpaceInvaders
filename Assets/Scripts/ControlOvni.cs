@@ -17,7 +17,7 @@ public class ControlOvni : MonoBehaviour {
 
     // Velocidad a la que se desplazan los aliens (medido en u/s)
     private float velocidad = 2f;
-    private float fuerza = 0.8f;
+    private float fuerza = 0.05f;
 
     private GameObject ovni;
 
