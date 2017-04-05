@@ -75,7 +75,10 @@ public class AnimatedDialog : MonoBehaviour {
         float distanciaHorizontal = Camera.main.orthographicSize * Screen.width / Screen.height;
 
 		PlayerPrefs.SetString ("numJug", numJugadores);
-   
+
+        //variable para contar cuantas naves son matadas por balas mas adelante
+        PlayerPrefs.SetInt("xNave", 0);
+
         if (numJugadores.Equals("2")) {
             Debug.Log(numJugadores);
             GameObject nave = GameObject.Find ("Nave2");

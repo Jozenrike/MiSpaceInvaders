@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class ControlDisparo2 : MonoBehaviour {
 
     private string numJugadores = "";
-    private int x = 0;
     //public Transform bala;
     // Use this for initialization
     void Start () {
@@ -17,6 +16,7 @@ public class ControlDisparo2 : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        int x = PlayerPrefs.GetInt("xNave");
         numJugadores = PlayerPrefs.GetString("numJug");
 
         // Necesitamos saber contra qué hemos chocado
@@ -30,12 +30,12 @@ public class ControlDisparo2 : MonoBehaviour {
             
             if (numJugadores.Equals("2"))
             {
-                x = 1;
                 Destroy(gameObject);
                 Destroy(coll.gameObject);
-                if (x == 1){
+                if (x == 1) {
                     SceneManager.LoadScene("GameOver");
                 }
+                PlayerPrefs.SetInt("xNave", 1);
             }
             else
             {
