@@ -79,7 +79,7 @@ public class GeneradorAliens : MonoBehaviour
 
 						// Nos movemos a la derecha (todos los aliens que queden)
 						aliens [i, j].transform.Translate (Vector2.right * velocidad * Time.deltaTime);
-                        Debug.Log("Derecha Viejo"+posiciones[i, j]);
+                        //Debug.Log("Derecha Viejo"+posiciones[i, j]);
                         Vector2 suma = Vector2.right * velocidad * Time.deltaTime;
                         posiciones[i, j] = posiciones[i, j] + suma;
                         //Debug.Log("Derecha Nuevo" + posiciones[i, j]);
@@ -92,7 +92,7 @@ public class GeneradorAliens : MonoBehaviour
 
 						// Nos movemos a la derecha (todos los aliens que queden)
 						aliens [i, j].transform.Translate (Vector2.left * velocidad * Time.deltaTime);
-                        Debug.Log("Izquierdo viejo" + posiciones[i, j]);
+                        //Debug.Log("Izquierdo viejo" + posiciones[i, j]);
                         //Guardo las posiciones y las modifico para disparar desde ellas
                         Vector2 suma = Vector2.left * velocidad * Time.deltaTime;
                         posiciones[i, j] = posiciones[i, j] + suma;
