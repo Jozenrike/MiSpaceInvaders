@@ -12,9 +12,7 @@ public class ControlAlien : MonoBehaviour
 
     // Objeto para reproducir la explosión de un alien
     private GameObject efectoExplosion;
-
-    
-
+      
     // Use this for initialization
     void Start ()
 	{

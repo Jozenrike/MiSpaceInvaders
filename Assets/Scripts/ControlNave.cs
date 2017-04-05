@@ -14,8 +14,11 @@ public class ControlNave : MonoBehaviour
 	// Acceso al prefab del disparo
 	public Rigidbody2D disparo;
 
-	// Use this for initialization
-	void Start ()
+    public float fireRate = 0.3F;
+    private float nextFire = 0.0F;
+
+    // Use this for initialization
+    void Start ()
 	{
 	
 	}
@@ -53,8 +56,9 @@ public class ControlNave : MonoBehaviour
 		}
 
 		// Disparo
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			disparar ();
+		if (Input.GetKeyDown (KeyCode.Space) && Time.time > nextFire) { 
+            nextFire = Time.time + fireRate;
+            disparar ();
 		}
 	}
 

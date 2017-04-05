@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ControlOvni : MonoBehaviour {
 
-    private int puntos = 2000;
+    private int puntos = 500;
     // Enumeración para expresar el sentido del movimiento
     private enum direccion { IZQ, DER };
 
@@ -17,7 +17,7 @@ public class ControlOvni : MonoBehaviour {
 
     // Velocidad a la que se desplazan los aliens (medido en u/s)
     private float velocidad = 2f;
-    private float fuerza = 0.3f;
+    private float fuerza = 0.8f;
 
     private GameObject ovni;
 
@@ -80,7 +80,6 @@ public class ControlOvni : MonoBehaviour {
         // Necesitamos saber contra qué hemos chocado
         if (coll.gameObject.tag == "disparo" || coll.gameObject.tag == "disparo2")
         {
-            Debug.Log("ffff");
             // Sonido de explosión
             GetComponent<AudioSource>().Play();
 
@@ -89,13 +88,13 @@ public class ControlOvni : MonoBehaviour {
             {
                 marcador.GetComponent<ControlMarcador>().puntos += puntos;
             }
+			//si hay mas de dos jugadores:
             else
             {
                 marcador.GetComponent<ControlMarcador>().puntos2 += puntos;
             }
             Destroy(coll.gameObject);
 
-            // El alien desaparece (no hace falta retraso para la explosión, está en otro objeto)
             efectoExplosion.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
 

@@ -12,8 +12,8 @@ public class GeneradorAliens : MonoBehaviour
     public Rigidbody2D[,] aliens;
 
 	// Tamaño de la invasión alienígena
-	private int FILAS = 4;
-    private int COLUMNAS = 7;
+	private static int FILAS = 4;
+    private static int COLUMNAS = 7;
 
 	// Enumeración para expresar el sentido del movimiento
 	private enum direccion { IZQ, DER };
@@ -29,16 +29,19 @@ public class GeneradorAliens : MonoBehaviour
 	private float limiteDer;
 
 	// Velocidad a la que se desplazan los aliens (medido en u/s)
-	private float velocidad = 0.5f;
+	private float velocidad = 2f;
 
-    private float fuerza = 0.3f;
+    private float fuerza = 0.7f;
 
     private int contador = 0;
 
     public Rigidbody2D bala;
 
-	// Use this for initialization
-	void Start ()
+	private Vector2 posicion;
+	private Vector2[,] posiciones  = new Vector2[FILAS, COLUMNAS];
+
+    // Use this for initialization
+    void Start ()
 	{
         
         // Rejilla de 4x7 aliens
@@ -58,8 +61,8 @@ public class GeneradorAliens : MonoBehaviour
 		// Contador para saber si hemos terminado
 		int numAliens = 0;
 
-		// Variable para saber si al menos un alien ha llegado al borde
-		bool limiteAlcanzado = false;
+        // Variable para saber si al menos un alien ha llegado al borde
+        bool limiteAlcanzado = false;
 
 		// Recorremos la horda alienígena
 		for (int i = 0; i < FILAS; i++) {
@@ -76,39 +79,55 @@ public class GeneradorAliens : MonoBehaviour
 
 						// Nos movemos a la derecha (todos los aliens que queden)
 						aliens [i, j].transform.Translate (Vector2.right * velocidad * Time.deltaTime);
+                        Debug.Log("Derecha Viejo"+posiciones[i, j]);
+                        Vector2 suma = Vector2.right * velocidad * Time.deltaTime;
+                        posiciones[i, j] = posiciones[i, j] + suma;
+                        //Debug.Log("Derecha Nuevo" + posiciones[i, j]);
 
-						// Comprobamos si hemos tocado el borde
-						if (aliens [i, j].transform.position.x > limiteDer) {
+                        // Comprobamos si hemos tocado el borde
+                        if (aliens [i, j].transform.position.x > limiteDer) {
 							limiteAlcanzado = true;
 						}
 					} else {
 
 						// Nos movemos a la derecha (todos los aliens que queden)
 						aliens [i, j].transform.Translate (Vector2.left * velocidad * Time.deltaTime);
+                        Debug.Log("Izquierdo viejo" + posiciones[i, j]);
+                        //Guardo las posiciones y las modifico para disparar desde ellas
+                        Vector2 suma = Vector2.left * velocidad * Time.deltaTime;
+                        posiciones[i, j] = posiciones[i, j] + suma;
+                        //Debug.Log("Izquierdo nuevo" + posiciones[i, j]);
 
-						// Comprobamos si hemos tocado el borde
-						if (aliens [i, j].transform.position.x < limiteIzq) {
+                        // Comprobamos si hemos tocado el borde
+                        if (aliens [i, j].transform.position.x < limiteIzq) {
 							limiteAlcanzado = true;
 						}
-					}		
+					}
 				}
 			}
-		}
+
+        }
 
 		// Si no quedan aliens, hemos terminado
 		if( numAliens == 0 ) {
 			SceneManager.LoadScene ("Nivel1");
 		}
 
-		// Si al menos un alien ha tocado el borde, todo el pack cambia de rumbo
-		if (limiteAlcanzado == true) {
-			for (int i = 0; i < FILAS; i++) {
+        // Si al menos un alien ha tocado el borde, todo el pack cambia de rumbo
+        if (limiteAlcanzado == true)
+        {
+            for (int i = 0; i < FILAS; i++) {
 				for (int j = 0; j < COLUMNAS; j++) {
 
 					// Comprobamos que haya objeto, para cuando nos empiecen a disparar
-					if (aliens [i, j] != null) {
-						aliens[i,j].transform.Translate (Vector2.down * altura);
-					}
+					if (aliens [i, j] != null)
+                    {
+                        aliens[i,j].transform.Translate (Vector2.down * altura);
+                        Vector2 suma = Vector2.down * altura;
+                        posiciones[i, j] = posiciones[i, j] + suma;
+                        //Debug.Log(posiciones[i, j]);
+
+                    }
 				}
 			}
 
@@ -120,43 +139,38 @@ public class GeneradorAliens : MonoBehaviour
 			}
 		}
 
-
         contador++;
 
-        if (contador % 100 == 0)
+        if (contador % 150 == 0)
         {
-            //disparar();
+            disparar();
         }
-
-
-
     }
 
 	void generarAliens (int filas, int columnas, float espacioH, float espacioV, float escala = 1.0f)
 	{
-        
-		/* Creamos una rejilla de aliens a partir del punto de origen
+
+        /* Creamos una rejilla de aliens a partir del punto de origen
 		 * 
 		 * Ejemplo (2,5):
 		 *   A A A A A
 		 *   A A O A A
 		 */
 
-		// Calculamos el punto de origen de la rejilla
-		Vector2 origen = new Vector2 (transform.position.x - (columnas / 2.0f) * espacioH + (espacioH / 2), transform.position.y);
-
-		// Instanciamos el array de referencias
-		aliens = new Rigidbody2D[filas, columnas];
+        // Calculamos el punto de origen de la rejilla
+        Vector2 origen = new Vector2 (transform.position.x - (columnas / 2.0f) * espacioH + (espacioH / 2), transform.position.y);
+        // Instanciamos el array de referencias
+        aliens = new Rigidbody2D[filas, columnas];
 
 		// Fabricamos un alien en cada posición del array
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
-
 				// Posición de cada alien
-				Vector2 posicion = new Vector2 (origen.x + (espacioH * j), origen.y + (espacioV * i));
-
+				posicion = new Vector2 (origen.x + (espacioH * j), origen.y + (espacioV * i));
+                posiciones[i,j] = posicion;
 				// Instanciamos el objeto partiendo del prefab
 				Rigidbody2D alien = (Rigidbody2D)Instantiate (prefabAlien1, posicion, transform.rotation);
+				//arrayAliens[cont] = alien;
 
 				// Guardamos el alien en el array
 				aliens [i, j] = alien;
@@ -174,12 +188,16 @@ public class GeneradorAliens : MonoBehaviour
 
         // Hacemos copias del prefab del disparo y las lanzamos
         Rigidbody2D d = (Rigidbody2D)Instantiate(bala, transform.position, transform.rotation);
-                
+
         // Desactivar la gravedad para este objeto, si no, ¡se cae!
         d.gravityScale = 0;
-
+        int numero = Random.Range(0, COLUMNAS-1);
+        int numero2 = Random.Range(0, FILAS-1);
         // Posición de partida, en la punta de la nave
-        d.transform.Translate(new Vector2(Random.Range(-6, 6), Random.Range(3, -1)) * 0.7f);
+            //derecha
+         d.transform.Translate(posiciones[numero2, numero]);
+        
+
 
         // Lanzarlo
         d.AddForce(Vector2.down * fuerza, ForceMode2D.Impulse);
