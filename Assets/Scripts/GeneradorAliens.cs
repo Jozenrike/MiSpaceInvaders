@@ -125,7 +125,7 @@ public class GeneradorAliens : MonoBehaviour
 
         if (contador % 100 == 0)
         {
-            disparar();
+            //disparar();
         }
 
 

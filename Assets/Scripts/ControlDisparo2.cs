@@ -6,10 +6,8 @@ using UnityEngine.SceneManagement;
 public class ControlDisparo2 : MonoBehaviour {
     
     private string numJugadores = "";
-    public Transform bala;
     // Use this for initialization
     void Start () {
-        Transform bullet = Instantiate(bala) as Transform;
     }
 
     void OnCollisionEnter2D(Collision2D coll)
