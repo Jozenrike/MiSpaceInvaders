@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 public class GeneradorAliens : MonoBehaviour
 {
 
-	// Publicamos la variable para conectarla desde el editor
-	public Rigidbody2D prefabAlien1;
+    public int nivel = 1;
+    // Publicamos la variable para conectarla desde el editor
+    public Rigidbody2D prefabAlien1;
+    public Rigidbody2D prefabAlien2;
 
     // Referencia para guardar una matriz de objetos
     public Rigidbody2D[,] aliens;
@@ -22,33 +24,50 @@ public class GeneradorAliens : MonoBehaviour
 	private direccion rumbo = direccion.DER;
 
 	// Posición vertical de la horda (lo iremos restando de la .y de cada alien)
-	private float altura = 0.5f;
+	private float altura = 0.2f;
+    private float alturaTotal = 0.0f;
 
 	// Límites de la pantalla
 	private float limiteIzq;
 	private float limiteDer;
 
 	// Velocidad a la que se desplazan los aliens (medido en u/s)
-	private float velocidad = 2f;
+	private float velocidad = 5.0f;
 
-    private float fuerza = 0.7f;
+    private float fuerza = 1.0f;
 
     private int contador = 0;
 
+    private GameObject marcador;
     public Rigidbody2D bala;
 
 	private Vector2 posicion;
-	private Vector2[,] posiciones  = new Vector2[FILAS, COLUMNAS];
+    private Vector2[,] posiciones;
 
     // Use this for initialization
     void Start ()
 	{
-        
+        if (nivel > 1)
+        {
+            FILAS = FILAS + 1;
+            COLUMNAS = COLUMNAS + 1;
+            velocidad = velocidad + 1.0f;
+        }
         // Rejilla de 4x7 aliens
+        posiciones = new Vector2[FILAS, COLUMNAS];
         generarAliens (FILAS, COLUMNAS, 1.5f, 1.0f);
 
-		// Calculamos la anchura visible de la cámara en pantalla
-		float distanciaHorizontal = Camera.main.orthographicSize * Screen.width / Screen.height;
+        if (nivel > 1)
+        {
+            marcador = GameObject.Find("Marcador");
+            marcador.GetComponent<ControlMarcador>().puntos = PlayerPrefs.GetInt("puntosJugador1");
+            if (PlayerPrefs.GetInt("numJug") == 2)
+            {
+                marcador.GetComponent<ControlMarcador>().puntos2 = PlayerPrefs.GetInt("puntosJugador2");
+            }
+        }
+        // Calculamos la anchura visible de la cámara en pantalla
+        float distanciaHorizontal = Camera.main.orthographicSize * Screen.width / Screen.height;
 
 		// Calculamos el límite izquierdo y el derecho de la pantalla (añadimos una unidad a cada lado como margen)
 		limiteIzq = -1.0f * distanciaHorizontal + 1;
@@ -108,14 +127,33 @@ public class GeneradorAliens : MonoBehaviour
 
         }
 
-		// Si no quedan aliens, hemos terminado
-		if( numAliens == 0 ) {
-			SceneManager.LoadScene ("Nivel1");
-		}
+        // Si no quedan aliens, hemos terminado
+        if (numAliens == 0) 
+        {
+            int nuevoNivel = nivel + 1;
+            string lvl = "Nivel"+nuevoNivel;
+            Debug.Log(lvl);
+            if (nivel > 0)
+            {
+                SceneManager.LoadScene(lvl);
+                nivel = nuevoNivel;
+            }
+            else
+            {
+                SceneManager.LoadScene(lvl);
+                nivel = nuevoNivel;
+            }
+        }
 
         // Si al menos un alien ha tocado el borde, todo el pack cambia de rumbo
         if (limiteAlcanzado == true)
         {
+            //aumento velocidad cuando llegan a cierta distancia de la nave
+            alturaTotal = alturaTotal + altura;
+            if (alturaTotal > 2.0f)
+            {
+                velocidad = velocidad + 0.2f;
+            }
             for (int i = 0; i < FILAS; i++) {
 				for (int j = 0; j < COLUMNAS; j++) {
 
@@ -123,10 +161,10 @@ public class GeneradorAliens : MonoBehaviour
 					if (aliens [i, j] != null)
                     {
                         aliens[i,j].transform.Translate (Vector2.down * altura);
+                       
                         Vector2 suma = Vector2.down * altura;
                         posiciones[i, j] = posiciones[i, j] + suma;
-                        //Debug.Log(posiciones[i, j]);
-
+                        
                     }
 				}
 			}
@@ -141,7 +179,7 @@ public class GeneradorAliens : MonoBehaviour
 
         contador++;
 
-        if (contador % 150 == 0)
+        if (contador % 100 == 0)
         {
             disparar();
         }
@@ -149,35 +187,57 @@ public class GeneradorAliens : MonoBehaviour
 
 	void generarAliens (int filas, int columnas, float espacioH, float espacioV, float escala = 1.0f)
 	{
-
         /* Creamos una rejilla de aliens a partir del punto de origen
 		 * 
 		 * Ejemplo (2,5):
 		 *   A A A A A
 		 *   A A O A A
 		 */
-
         // Calculamos el punto de origen de la rejilla
         Vector2 origen = new Vector2 (transform.position.x - (columnas / 2.0f) * espacioH + (espacioH / 2), transform.position.y);
         // Instanciamos el array de referencias
         aliens = new Rigidbody2D[filas, columnas];
-
-		// Fabricamos un alien en cada posición del array
-		for (int i = 0; i < filas; i++) {
+        //reescalado de aliens por nivel
+        if (nivel > 1)
+        {
+            espacioH = espacioH * 0.8f;
+            espacioV = espacioV * 0.8f;
+        }
+        // Fabricamos un alien en cada posición del array
+        for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				// Posición de cada alien
 				posicion = new Vector2 (origen.x + (espacioH * j), origen.y + (espacioV * i));
                 posiciones[i,j] = posicion;
-				// Instanciamos el objeto partiendo del prefab
-				Rigidbody2D alien = (Rigidbody2D)Instantiate (prefabAlien1, posicion, transform.rotation);
-				//arrayAliens[cont] = alien;
+                // Instanciamos el objeto partiendo del prefab
+                Rigidbody2D alien = null;
 
-				// Guardamos el alien en el array
-				aliens [i, j] = alien;
+                //arrayAliens[cont] = alien;
+                if (nivel == 1)
+                {
+                    alien = (Rigidbody2D)Instantiate(prefabAlien1, posicion, transform.rotation);
+                }
+                else if (nivel == 2)
+                {
+                    if (i > 3)
+                    {
+                        alien = (Rigidbody2D)Instantiate(prefabAlien2, posicion, transform.rotation);
+                        alien.transform.localScale = prefabAlien1.transform.localScale * 0.8f;
+                    }
+                    else
+                    {
+                        alien = (Rigidbody2D)Instantiate(prefabAlien1, posicion, transform.rotation);
+                        alien.transform.localScale = prefabAlien1.transform.localScale * 0.8f;
+                    }
+
+                }
+
+                // Guardamos el alien en el array
+                aliens [i, j] = alien;
 
 				// Escala opcional, por defecto 1.0f (sin escala)
 				// Nota: El prefab original ya está escalado a 0.2f
-				alien.transform.localScale = new Vector2 (0.2f * escala, 0.2f * escala);
+				//alien.transform.localScale = new Vector2 (0.2f * escala, 0.2f * escala);
 			}
 		}
 

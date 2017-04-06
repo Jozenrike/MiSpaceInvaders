@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ControlDisparo2 : MonoBehaviour {
     
-    private string numJugadores = "";
+    private int numJugadores = 0;
     // Use this for initialization
     void Start () {
     }
@@ -13,7 +13,7 @@ public class ControlDisparo2 : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D coll)
     {
         int x = PlayerPrefs.GetInt("xNave");
-        numJugadores = PlayerPrefs.GetString("numJug");
+        numJugadores = PlayerPrefs.GetInt("numJug");
 
         // Necesitamos saber contra qué hemos chocado
         if (coll.gameObject.tag == "disparo" || coll.gameObject.tag == "disparo2")

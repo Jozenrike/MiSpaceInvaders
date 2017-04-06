@@ -12,10 +12,22 @@ public class GameOver : MonoBehaviour {
 
 	public Button jugador1;
 	public Button jugador2;
+
+	public int numJugadores = 1;
 	// Use this for initialization
 	void Start () {
-		
+		numJugadores = PlayerPrefs.GetInt ("numJug");
+		textoInicio2.text = PlayerPrefs.GetInt ("puntosJugador1")+"";
+		if (numJugadores == 1) {
+			textoInicio.text = "Total Puntos";
+			textoInicio1.enabled = false;
+			textoInicio3.enabled = false;
+		} 
+		else {
+			textoInicio3.text = PlayerPrefs.GetInt ("puntosJugador2")+"";
+		}
 	}
+
 	
 	// Update is called once per frame
 	void Update () {

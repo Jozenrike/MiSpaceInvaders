@@ -12,12 +12,16 @@ public class ControlAlien : MonoBehaviour
 
     // Objeto para reproducir la explosión de un alien
     private GameObject efectoExplosion;
-      
+
+    
+    private float tiempo = 0.0F;
+    private float cd = 0.3f;
     // Use this for initialization
     void Start ()
 	{
-		// Localizamos el objeto que contiene el marcador
-		marcador = GameObject.Find ("Marcador");
+        StartCoroutine(t());
+        // Localizamos el objeto que contiene el marcador
+        marcador = GameObject.Find ("Marcador");
 
 		// Objeto para reproducir la explosión de un alien
 		efectoExplosion = GameObject.Find ("EfectoExplosion");
@@ -26,7 +30,6 @@ public class ControlAlien : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
     }
 
 	void OnCollisionEnter2D (Collision2D coll)
@@ -50,14 +53,20 @@ public class ControlAlien : MonoBehaviour
 			// El alien desaparece (no hace falta retraso para la explosión, está en otro objeto)
 			efectoExplosion.GetComponent<AudioSource> ().Play ();
 			Destroy (gameObject);
-
-		} else if (coll.gameObject.tag == "nave" || coll.gameObject.tag == "nave2") {
+            Time.timeScale = 0.1f;
+            t();
+            Time.timeScale = 1;
+            
+            } else if (coll.gameObject.tag == "nave" || coll.gameObject.tag == "nave2") {
 			SceneManager.LoadScene ("GameOver");
 		}
     		// El disparo desaparece (cuidado, si tiene eventos no se ejecutan)
 	}
 
 
-
+    IEnumerator t()
+    {
+        yield return new WaitForSeconds(1);
+    }
 
 }

@@ -17,11 +17,15 @@ public class ControlNave : MonoBehaviour
     public float fireRate = 0.3F;
     private float nextFire = 0.0F;
 
+    public int nivel = 1;
     // Use this for initialization
     void Start ()
 	{
-	
-	}
+        if (nivel == 1)
+        {
+            PlayerPrefs.SetInt("puntosJugador1", 0);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -56,10 +60,10 @@ public class ControlNave : MonoBehaviour
 		}
 
 		// Disparo
-		if (Input.GetKeyDown (KeyCode.Space) && Time.time > nextFire) { 
+		if (Input.GetKeyDown (KeyCode.Space) && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
-            disparar ();
-		}
+            disparar();
+        }
 	}
 
 	void disparar ()

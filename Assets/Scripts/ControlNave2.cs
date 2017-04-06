@@ -17,11 +17,26 @@ public class ControlNave2 : MonoBehaviour
     public float fireRate = 0.3F;
     private float nextFire = 0.0F;
 
+    public int nivel = 1;
+    private GameObject nave;
     // Use this for initialization
     void Start ()
 	{
+        int numJugadores = PlayerPrefs.GetInt("numJug");
+        if (numJugadores == 1)
+        {
+            nave = GameObject.Find("Nave2");
+            Destroy(nave);
+        }
+        else
+        {
+            if (nivel == 1)
+            {
+                PlayerPrefs.SetInt("puntosJugador2", 0);
+            }
 
-	}
+        }
+    }
 
 	// Update is called once per frame
 	void Update ()
