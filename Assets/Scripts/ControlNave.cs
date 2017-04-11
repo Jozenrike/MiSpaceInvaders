@@ -19,12 +19,15 @@ public class ControlNave : MonoBehaviour
     public float fireRate = 0.3F;
 	private float nextFire = 0.0F;
 
+<<<<<<< HEAD
 
 	public float fireRateMisil = 2.0F;
 	private float nextFireMisil = 0.0F;
 
 	private int dainoMisil = 2;
 
+=======
+>>>>>>> Pruebas
     public int nivel = 1;
     // Use this for initialization
     void Start ()
@@ -68,6 +71,7 @@ public class ControlNave : MonoBehaviour
 		}
 
 		// Disparo
+<<<<<<< HEAD
 		if (Input.GetKeyDown (KeyCode.Keypad0) && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
             disparar();
@@ -79,6 +83,12 @@ public class ControlNave : MonoBehaviour
 			disparoEspecial();
 		}
 
+=======
+		if (Input.GetKeyDown (KeyCode.Space) && Time.time > nextFire) {
+            nextFire = Time.time + fireRate;
+            disparar();
+        }
+>>>>>>> Pruebas
 	}
 
 	void disparar ()

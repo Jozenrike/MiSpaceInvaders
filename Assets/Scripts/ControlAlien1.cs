@@ -14,6 +14,7 @@ public class ControlAlien1 : MonoBehaviour
 	// Objeto para reproducir la explosión de un alien
 	private GameObject efectoExplosion;
 
+<<<<<<< HEAD
 	//AGREGAR///////
 	private GameObject ga;
 	private int filas, columnas;
@@ -23,16 +24,28 @@ public class ControlAlien1 : MonoBehaviour
     void Start ()
 	{
 		ga = GameObject.Find ("GeneradorAliens");
+=======
+
+    public float fireRate = 0.3F;
+    private float nextFire = 0.0F;
+
+    // Use this for initialization
+    void Start ()
+	{
+>>>>>>> Pruebas
 		// Localizamos el objeto que contiene el marcador
 		marcador = GameObject.Find ("Marcador");
 
 		// Objeto para reproducir la explosión de un alien
 		efectoExplosion = GameObject.Find ("EfectoExplosion");
+<<<<<<< HEAD
 
 		//AGREGAR///////
 		array = ga.GetComponent<GeneradorAliens>().posiciones;
 		filas = ga.GetComponent<GeneradorAliens>().FILAS;
 		columnas = ga.GetComponent<GeneradorAliens>().COLUMNAS;
+=======
+>>>>>>> Pruebas
 	}
 	
 	// Update is called once per frame
@@ -53,10 +66,17 @@ public class ControlAlien1 : MonoBehaviour
 
 			// Sumar la puntuación al marcador
 			if (coll.gameObject.tag == "disparo") {
+<<<<<<< HEAD
 				marcador.GetComponent<ControlMarcador> ().puntos += puntos / 2;
 				PlayerPrefs.SetInt ("puntosJugador1", marcador.GetComponent<ControlMarcador> ().puntos);
 			} else {
 				marcador.GetComponent<ControlMarcador> ().puntos2 += puntos / 2;
+=======
+				marcador.GetComponent<ControlMarcador> ().puntos += puntos/2;
+				PlayerPrefs.SetInt ("puntosJugador1", marcador.GetComponent<ControlMarcador> ().puntos);
+			} else {
+				marcador.GetComponent<ControlMarcador> ().puntos2 += puntos/2;
+>>>>>>> Pruebas
 				PlayerPrefs.SetInt ("puntosJugador2", marcador.GetComponent<ControlMarcador> ().puntos2);
 			}
 
@@ -68,7 +88,11 @@ public class ControlAlien1 : MonoBehaviour
 			Destroy (coll.gameObject);
 
 			// El alien desaparece (no hace falta retraso para la explosión, está en otro objeto)
+<<<<<<< HEAD
 			if (vidas == 0) {
+=======
+			if(vidas == 0){
+>>>>>>> Pruebas
 				efectoExplosion.GetComponent<AudioSource> ().Play ();
 				Destroy (gameObject);
 			}
@@ -76,6 +100,7 @@ public class ControlAlien1 : MonoBehaviour
 
 		} else if (coll.gameObject.tag == "nave" || coll.gameObject.tag == "nave2") {			
 			SceneManager.LoadScene ("GameOver");
+<<<<<<< HEAD
 		}  else if (coll.gameObject.tag == "misil" || coll.gameObject.tag == "misil2") {
 
 			// Sonido de explosión
@@ -113,6 +138,8 @@ public class ControlAlien1 : MonoBehaviour
 					array[i, j] = new Vector2();
 				}
 			}
+=======
+>>>>>>> Pruebas
 		}
 	}
 }

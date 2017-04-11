@@ -19,10 +19,13 @@ public class ControlNave2 : MonoBehaviour
     public float fireRate = 0.3F;
 	private float nextFire = 0.0F;
 
+<<<<<<< HEAD
 
 	public float fireRateMisil = 2.0F;
 	private float nextFireMisil = 0.0F;
 
+=======
+>>>>>>> Pruebas
     public int nivel = 1;
     private GameObject nave;
     // Use this for initialization

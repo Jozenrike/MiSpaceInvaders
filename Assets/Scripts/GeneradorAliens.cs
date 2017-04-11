@@ -42,7 +42,11 @@ public class GeneradorAliens : MonoBehaviour
     public Rigidbody2D bala;
 
 	private Vector2 posicion;
+<<<<<<< HEAD
     public Vector2[,] posiciones;
+=======
+    private Vector2[,] posiciones;
+>>>>>>> Pruebas
 
     // Use this for initialization
     void Start ()
