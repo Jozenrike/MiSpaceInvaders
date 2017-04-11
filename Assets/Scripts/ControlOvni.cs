@@ -17,7 +17,7 @@ public class ControlOvni : MonoBehaviour {
 
     // Velocidad a la que se desplazan los aliens (medido en u/s)
     private float velocidad = 2f;
-    private float fuerza = 0.05f;
+    private float fuerza = 0.03f;
 
     private GameObject ovni;
 
@@ -98,7 +98,26 @@ public class ControlOvni : MonoBehaviour {
             efectoExplosion.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
 
-        }
+		}else if (coll.gameObject.tag == "misil" || coll.gameObject.tag == "misil2") {
+
+			GetComponent<AudioSource> ().Play ();
+
+			// Sumar la puntuación al marcador
+			if (coll.gameObject.tag == "misil") {
+				marcador.GetComponent<ControlMarcador> ().puntos += puntos;
+				PlayerPrefs.SetInt ("puntosJugador1", marcador.GetComponent<ControlMarcador> ().puntos);
+			} else {
+				marcador.GetComponent<ControlMarcador> ().puntos2 += puntos;
+				PlayerPrefs.SetInt ("puntosJugador2", marcador.GetComponent<ControlMarcador> ().puntos2);
+			}
+			Destroy (gameObject);
+			coll.gameObject.GetComponent<ControlMisil> ().vidas--;
+
+			if (coll.gameObject.GetComponent<ControlMisil> ().vidas == 0) {
+				Destroy (coll.gameObject);
+			}
+
+		}
         
         // El disparo desaparece (cuidado, si tiene eventos no se ejecutan)
     }

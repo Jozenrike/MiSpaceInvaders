@@ -21,6 +21,10 @@ public class AnimatedDialog : MonoBehaviour
     //int stringIndex = 0;
     int characterIndex = 0;
 
+
+
+	private GameObject nave;
+	private GameObject nave2;
     // Use this for initialization
     void Start()
     {
@@ -88,6 +92,8 @@ public class AnimatedDialog : MonoBehaviour
         //float limiteDer = 1.0f * distanciaHorizontal;
         PlayerPrefs.SetInt("xNave", 0);
         PlayerPrefs.SetInt("numJug", numJugadores);
+
+
         //Dictionary <string, string> parametros = Scenes.getSceneParameters();
         //string numJugadores = Scenes.getParam("numJugadores");
 

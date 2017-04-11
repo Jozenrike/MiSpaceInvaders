@@ -9,13 +9,21 @@ public class ControlNave : MonoBehaviour
 	private float velocidad = 20f;
 
 	// Fuerza de lanzamiento del disparo
-	private float fuerza = 0.5f;
+	private float fuerza = 1f;
+	private float fuerzaMisil = 0.5f;
 
 	// Acceso al prefab del disparo
 	public Rigidbody2D disparo;
+	public Rigidbody2D misil;
 
     public float fireRate = 0.3F;
-    private float nextFire = 0.0F;
+	private float nextFire = 0.0F;
+
+
+	public float fireRateMisil = 2.0F;
+	private float nextFireMisil = 0.0F;
+
+	private int dainoMisil = 2;
 
     public int nivel = 1;
     // Use this for initialization
@@ -60,10 +68,17 @@ public class ControlNave : MonoBehaviour
 		}
 
 		// Disparo
-		if (Input.GetKeyDown (KeyCode.Space) && Time.time > nextFire) {
+		if (Input.GetKeyDown (KeyCode.Keypad0) && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
             disparar();
         }
+
+		//Disparo Especial
+		if (Input.GetKeyDown (KeyCode.KeypadEnter) && Time.time > nextFireMisil) {
+			nextFireMisil = Time.time + fireRateMisil;
+			disparoEspecial();
+		}
+
 	}
 
 	void disparar ()
@@ -79,6 +94,22 @@ public class ControlNave : MonoBehaviour
 
 		// Lanzarlo
 		d.AddForce (Vector2.up * fuerza, ForceMode2D.Impulse);	
+	}
+
+
+	void disparoEspecial ()
+	{
+		// Hacemos copias del prefab del disparo y las lanzamos
+		Rigidbody2D d = (Rigidbody2D)Instantiate (misil, transform.position, transform.rotation);
+
+		// Desactivar la gravedad para este objeto, si no, ¡se cae!
+		d.gravityScale = 0;
+
+		// Posición de partida, en la punta de la nave
+		d.transform.Translate (Vector2.up * 1f);
+
+		// Lanzarlo
+		//d.AddForce (Vector2.up * fuerzaMisil, ForceMode2D.Impulse);	
 	}
 
 }

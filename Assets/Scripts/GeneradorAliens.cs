@@ -14,8 +14,8 @@ public class GeneradorAliens : MonoBehaviour
     public Rigidbody2D[,] aliens;
 
 	// Tamaño de la invasión alienígena
-	private static int FILAS = 4;
-    private static int COLUMNAS = 7;
+	public int FILAS = 4;
+    public int COLUMNAS = 7;
 
 	// Enumeración para expresar el sentido del movimiento
 	private enum direccion { IZQ, DER };
@@ -42,7 +42,7 @@ public class GeneradorAliens : MonoBehaviour
     public Rigidbody2D bala;
 
 	private Vector2 posicion;
-    private Vector2[,] posiciones;
+    public Vector2[,] posiciones;
 
     // Use this for initialization
     void Start ()
